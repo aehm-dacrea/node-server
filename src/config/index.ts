@@ -11,7 +11,7 @@ if (envFound.error) {
 
 export default {
   port: parseInt(process.env.PORT, 10),
-  logs: process.env.LOG_LEVEL || 'silly',
+  logs: { level: process.env.LOG_LEVEL || 'silly' },
   databaseURL: process.env.MONGODB_URI,
   secret: process.env.SECRET,
   telegramToken: process.env.TELEGRAM_TOKEN,

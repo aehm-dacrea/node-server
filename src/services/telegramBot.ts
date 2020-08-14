@@ -1,6 +1,7 @@
 import Message from '../models/message';
 import User from '../models/user';
 import TelegramBot from 'node-telegram-bot-api';
+import Logger from '../loaders/logger';
 import config from '../config';
 
 export default class TelegramBotService {
@@ -26,7 +27,6 @@ export default class TelegramBotService {
         user: user,
         content: resp,
       });
-
       this.bot.sendMessage(chatId, message.toString());
     });
   }

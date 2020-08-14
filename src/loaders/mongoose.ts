@@ -8,6 +8,5 @@ export default async (): Promise<Db> => {
     useCreateIndex: true,
     useUnifiedTopology: true,
   });
-  console.log('Mongoose loaded');
   return connection.connection.db;
 };
