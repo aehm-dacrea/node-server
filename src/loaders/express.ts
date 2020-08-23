@@ -1,9 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import session from 'express-session';
 import cors from 'cors';
 import routes from '../api';
-import config from '../config';
 
 export default ({ app }: { app: express.Application }): void => {
   app.get('/status', (req, res) => {
@@ -14,15 +12,8 @@ export default ({ app }: { app: express.Application }): void => {
   });
 
   app.use(cors());
-  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
   app.set('trust proxy', 1);
-  app.use(
-    session({
-      secret: config.secret,
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
 
   app.use(routes());
 
