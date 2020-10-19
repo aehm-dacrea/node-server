@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import UserModel from '../../models/user';
 import { Auth } from '../../services/auth';
 import config from '../../config';
+import Logger from '../../loaders/logger';
 
 // const getTokenFromHeader = (req) => {
 //   if (
@@ -14,14 +15,18 @@ import config from '../../config';
 //   return null;
 // };
 
-const getToken = (req: Request, newToken: string) => {
-  if (newToken) {
-    return newToken;
-  }
+const getTokenFromCookie = (req: Request) => {
   if (req.cookies) {
     return req.cookies.jwt;
   }
   return null;
+};
+
+const getToken = (req: Request, newToken: string) => {
+  if (newToken) {
+    return newToken;
+  }
+  return getTokenFromCookie(req);
 };
 
 const refreshToken = async (
@@ -44,6 +49,11 @@ const refreshToken = async (
     return res.status(401).json(err);
   }
   const newToken = Auth.generateToken(userRecord, false);
+  res.cookie('jwt', newToken, {
+    secure: true,
+    httpOnly: true,
+    expires: new Date(Date.now() + 31556952000),
+  });
   callback(req, res, next, newToken);
 };
 
@@ -55,6 +65,7 @@ const isAuth = async (req: Request, res: Response, next: NextFunction, newToken 
     req.token = jwt.verify(token, config.accessTokenSecret);
   } catch (err) {
     if (err.name == 'TokenExpiredError') {
+      Logger.silly('Token expired. Generating new one!');
       return await refreshToken(req, res, next, isAuth);
     }
     next(err);
