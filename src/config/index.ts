@@ -17,4 +17,8 @@ export default {
   secret: process.env.SECRET,
   telegramToken: process.env.TELEGRAM_TOKEN,
   jwtSecret: process.env.JWT_SECRET,
+  accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
+  accessTokenLife: parseInt(process.env.ACCESS_TOKEN_LIFE),
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
+  refreshTokenLife: parseInt(process.env.REFRESH_TOKEN_LIFE),
 };
