@@ -94,7 +94,7 @@ export default class AuthService {
     const expiresIn = isRefreshToken ? config.refreshTokenLife : config.accessTokenLife;
     const secret = isRefreshToken ? config.refreshTokenSecret : config.accessTokenSecret;
 
-    Logger.silly(`Sign JWT for userId: ${user._id}`);
+    Logger.silly(`Sign ${isRefreshToken ? 'refresh token' : 'access token'} for userId: ${user._id}`);
     return jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: expiresIn });
   }
 }

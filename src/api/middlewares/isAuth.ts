@@ -41,12 +41,14 @@ const refreshToken = async (
     return next(new Error('[RefreshToken] user does not exist'));
   }
   if (!userRecord.refreshToken) {
+    Logger.debug('[refreshToken] user record has no refresh token');
     return res.status(401).send();
   }
   try {
     jwt.verify(userRecord.refreshToken, config.refreshTokenSecret);
   } catch (err) {
-    return res.status(401).json(err);
+    Logger.debug('[refreshToken] refresh token is not valid');
+    return res.status(401).send();
   }
   const newToken = Auth.generateToken(userRecord, false);
   res.cookie('jwt', newToken, {
@@ -58,8 +60,7 @@ const refreshToken = async (
 };
 
 const isAuth = async (req: Request, res: Response, next: NextFunction, newToken = '') => {
-  console.log('token: ', getToken(req, newToken));
-  console.log('cookies: %o', req.cookies);
+  Logger.silly('Calling isAuth middleware');
   const token = getToken(req, newToken);
   try {
     req.token = jwt.verify(token, config.accessTokenSecret);

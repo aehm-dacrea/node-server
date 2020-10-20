@@ -10,7 +10,7 @@ export default (app: Router): void => {
   app.use('/auth', route);
 
   route.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
-    Logger.debug('Calling Sign-Up endpoint with body: %o', req.body);
+    Logger.debug('Calling Sign-Up endpoint with body: %o', { ...req.body });
     try {
       const { user, accessToken } = await Auth.SignUp(req.body as IUserInputDTO);
       return res
@@ -22,14 +22,14 @@ export default (app: Router): void => {
         .json(user)
         .status(201)
         .send();
-    } catch (e) {
-      Logger.error('error: %o', e);
-      return next(e);
+    } catch (err) {
+      Logger.error('[SignUp endpoint] error: %o', err);
+      return next(err);
     }
   });
 
   route.post('/signin', async (req: Request, res: Response, next: NextFunction) => {
-    Logger.debug('Calling Sign-In endpoint with body: %o', req.body);
+    Logger.debug('Calling Sign-In endpoint with body: %o', { ...req.body });
     try {
       const { email, password } = req.body;
       const { user, accessToken } = await Auth.SignIn(email, password);
@@ -43,19 +43,19 @@ export default (app: Router): void => {
         .status(200)
         .send();
     } catch (e) {
-      Logger.error('error: %o', e);
+      Logger.error('[SignIn endpoint] error: %o', e);
       return next(e);
     }
   });
 
   route.post('/logout', middlewares.isAuth, async (req: Request, res: Response, next: NextFunction) => {
-    Logger.debug('Calling Sign-Out endpoint with body: %o', req.body);
+    Logger.debug('Calling Sign-Out endpoint with body: %o', { ...req.body });
     Logger.debug('Calling Sign-Out endpoint with token: %o', req.token);
-    Logger.debug('Calling Sign-Out endpoint with cookies: %o', req.cookies);
+    Logger.debug('Calling Sign-Out endpoint with cookies: %o', { ...req.cookies });
     try {
       await Auth.LogOut(req.body as IUserInputDTO);
     } catch (e) {
-      Logger.error('error %o', e);
+      Logger.error('[LogOut endpoint] error %o', e);
       return next(e);
     }
     return res.clearCookie('jwt', { secure: true, httpOnly: true }).status(200).end();
