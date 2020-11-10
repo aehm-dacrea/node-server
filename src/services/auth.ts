@@ -6,6 +6,7 @@ import Logger from '../loaders/logger';
 import UserModel from '../models/user';
 import { IUser, IUserInputDTO } from '../interfaces/IUser';
 import config from '../config';
+import EE, { events } from '../subscribers/user';
 
 export default class AuthService {
   public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser; accessToken: string }> {
@@ -34,6 +35,7 @@ export default class AuthService {
       Reflect.deleteProperty(user, 'password');
       Reflect.deleteProperty(user, 'salt');
       Reflect.deleteProperty(user, 'refreshToken');
+      EE.emit(events.user.signUp, user);
       return { user, accessToken };
     } catch (err) {
       Logger.error(err);
