@@ -13,7 +13,7 @@ class Mailchimp {
     });
   }
 
-  // this decorator checks if user is not unsubscribed consciously
+  // this decorator checks if user is not consciously unsubscribed earlier
   @validateSubscriber
   public async subscribe(user: Partial<IUser> & { hash?: string }) {
     try {
