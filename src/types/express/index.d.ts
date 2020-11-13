@@ -6,7 +6,13 @@ declare global {
   namespace Express {
     export interface Request {
       currentUser: IUser & Document;
-      token: unknown;
+      token: {
+        _id: string;
+        role: string;
+        name: string;
+        iat: string;
+        exp: string;
+      };
     }
   }
 
