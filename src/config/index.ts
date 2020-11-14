@@ -21,4 +21,7 @@ export default {
   accessTokenLife: parseInt(process.env.ACCESS_TOKEN_LIFE),
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   refreshTokenLife: parseInt(process.env.REFRESH_TOKEN_LIFE),
+  mailchimpToken: process.env.MAILCHIMP_TOKEN,
+  mailchimpServer: process.env.MAILCHIMP_SERVER,
+  mailchimpAudience: process.env.MAILCHIMP_AUDIENCE,
 };
