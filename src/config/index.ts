@@ -15,7 +15,6 @@ export default {
   databaseURL: process.env.MONGODB_URI,
   testDatabaseURL: process.env.MONGODB_TEST_URI,
   secret: process.env.SECRET,
-  telegramToken: process.env.TELEGRAM_TOKEN,
   jwtSecret: process.env.JWT_SECRET,
   accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
   accessTokenLife: parseInt(process.env.ACCESS_TOKEN_LIFE),
